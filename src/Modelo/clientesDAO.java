@@ -35,6 +35,7 @@ public class clientesDAO {
             return true;
         } catch (SQLException e) {
             JOptionPane.showMessageDialog(null, e.toString());
+            JOptionPane.showMessageDialog(null, "A ocurrido un error");
             return false;
         }finally {   //supuestamente esto es para finakizar la conexion
             try {
@@ -113,6 +114,7 @@ public class clientesDAO {
     public boolean eliminarClientes(int id){
         String sql= "DELETE FROM clientes WHERE id=?";
         try {
+            con = cn.GetConnection();
             ps = con.prepareStatement(sql);
             ps.setInt(1, id);
             ps.execute();
@@ -150,6 +152,7 @@ public class clientesDAO {
     public boolean modificarClientes(clientes cl) {
         String sql= "UPDATE clientes SET  dni=?, nombre=?, telefono=?, direccion=?, razon=? WHERE id=?";
         try {
+            con = cn.GetConnection();
             ps=con.prepareStatement(sql);
             ps.setString(1, cl.getDni());
             ps.setString(2, cl.getNombre());
@@ -165,7 +168,7 @@ public class clientesDAO {
         }finally{
             try {
                 con.close();
-            } catch (Exception e) {
+            } catch (SQLException e) {
                 System.out.println(e.toString());
             }
         }
