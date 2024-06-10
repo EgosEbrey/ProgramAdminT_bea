@@ -5,6 +5,9 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+import javax.swing.JComboBox;
 
 /**
  *
@@ -62,27 +65,44 @@ public class productosDao {
         return existe;
     }
     
-    /*public boolean existeCodigo(String cod) {
-    boolean existe = false;
-    try (Connection con = cn.GetConnection(); 
-         PreparedStatement ps = con.prepareStatement("SELECT COUNT(*) FROM productos WHERE codigo = ?")) {
-        
-        if (con == null) {
-            System.out.println("La conexión es nula");
-            return false;
+    public List listarProductos(){
+        List<productos> listPro= new ArrayList(); 
+        String sql="SELECT * FROM productos";
+        try {
+            con = cn.GetConnection();
+            ps = con.prepareStatement(sql);
+            rs = ps.executeQuery();
+            while (rs.next()) {                
+                productos pro = new productos ();
+                    pro.setId(rs.getInt("id"));
+                    pro.setCodigo(rs.getString("codigo"));
+                    pro.setPro_nombre(rs.getString("pro_nombre"));
+                    pro.setMarca(rs.getString("marca"));
+                    pro.setStock(rs.getInt("stock"));
+                    pro.setPrecio(rs.getDouble("precio"));
+                    listPro.add(pro);
+            }      
+        } catch (SQLException e) {
+            System.out.println(e.toString());
         }
-
-        ps.setString(1, cod);
-        try (ResultSet rs = ps.executeQuery()) {
-            if (rs.next() && rs.getInt(1) > 0) {
-                existe = true;
+        return listPro;
+    }
+    
+    public void consult_proveed_prod_cbx(JComboBox marca) {
+        String sql= "SELECT marca FROM productos";
+        
+        try {
+            con=cn.GetConnection();
+            ps=con.prepareStatement(sql);
+            rs=ps.executeQuery();
+            while (rs.next()){
+                marca.addItem(rs.getString("marca"));
             }
         } catch (SQLException e) {
-            System.out.println("Error al ejecutar la consulta: " + e.toString());
+            System.out.println(e.toString());
+            System.out.println("error al cargar jCBXmarcaProductos");
         }
-    } catch (SQLException e) {
-        System.out.println("Error al obtener la conexión: " + e.toString());
     }
-    return existe;
-}*/
 }
+
+

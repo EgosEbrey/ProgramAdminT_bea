@@ -15,6 +15,7 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.text.AttributeSet;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.PlainDocument;
+import org.jdesktop.swingx.autocomplete.AutoCompleteDecorator;
 
 /**
  *
@@ -37,7 +38,9 @@ public class Sistema extends javax.swing.JFrame {
         initComponents();
         this.setLocationRelativeTo(null);
         jButton_guar_camb.setVisible(false);
-
+        proDao.consult_proveed_prod_cbx(cbx_marca_productos); /// ACA SE ESTA LLAMANDO AL METODO QUE LLENA LOS CAMPOS DEL jCOMBOX EN "MARCA" DE PRODUCTOS 
+        AutoCompleteDecorator.decorate(cbx_marca_productos);   ///CON ESTA DECLARACION SE LOGRA QUE EN EL COMOBX DE MARCAPRODUCTOS AL ESCRIBIR SE VAYAN MOSTRANDO las opciones que estan disponibles
+                                                                                                                       /// hay que agregar la libreria swingx-all-1.6.4.jar.....
     }
     
     
@@ -122,6 +125,30 @@ public class Sistema extends javax.swing.JFrame {
         table_proveedor.setModel(modelo);
     }
     
+    public void listar_productos() {
+        List<productos> listaPro = proDao.listarProductos();
+        modelo = (DefaultTableModel)table_productos.getModel();//ACA HAY UN CASTEO QUE SE REALIZO CON LA OPCION QUE DA JAVA 
+        Object[] columnNames = {"id", "CODIGO", "PRODUCTO", "STOCK", "PRECIO", "MARCA"};
+        Object[][] data = new Object[listaPro.size()][6];
+        for (int i = 0; i < listaPro.size(); i++) {
+            data[i][0] = listaPro.get(i).getId();
+            data[i][1] = listaPro.get(i).getCodigo();
+            data[i][2] = listaPro.get(i).getPro_nombre();
+            data[i][3] = listaPro.get(i).getStock();
+            data[i][4] = listaPro.get(i).getPrecio();
+            data[i][5] = listaPro.get(i).getMarca();
+            /*ob[0]= listaCl.get(i).getId();
+            ob[1]= listaCl.get(i).getDni();
+            ob[2]= listaCl.get(i).getNombre();
+            ob[3]= listaCl.get(i).getTelefono();
+            ob[4]= listaCl.get(i).getDireccion();
+            ob[5]= listaCl.get(i).getRazon();*/
+            modelo.addRow(data);
+        }
+        NonEditableTableModel modelo = new NonEditableTableModel(data, columnNames);
+        table_productos.setModel(modelo);
+    }
+    
     public class NonEditableTableModel extends DefaultTableModel {
     public NonEditableTableModel(Object[][] data, Object[] columnNames) {
         super(data, columnNames);
@@ -149,12 +176,12 @@ public class Sistema extends javax.swing.JFrame {
     private void initComponents() {
 
         jPanel1 = new javax.swing.JPanel();
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
-        jButton4 = new javax.swing.JButton();
-        jButton5 = new javax.swing.JButton();
-        jButton6 = new javax.swing.JButton();
+        btn_nueva_venta = new javax.swing.JButton();
+        btn_clientes = new javax.swing.JButton();
+        btn_proveedor = new javax.swing.JButton();
+        btn_productos = new javax.swing.JButton();
+        btn_ventas = new javax.swing.JButton();
+        btn_config = new javax.swing.JButton();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         jLabelPuntoVenta = new javax.swing.JLabel();
@@ -279,51 +306,51 @@ public class Sistema extends javax.swing.JFrame {
 
         jPanel1.setBackground(new java.awt.Color(0, 51, 153));
 
-        jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Img/Nventa.png"))); // NOI18N
-        jButton1.setText("Nueva venta ");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        btn_nueva_venta.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Img/Nventa.png"))); // NOI18N
+        btn_nueva_venta.setText("Nueva venta ");
+        btn_nueva_venta.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                btn_nueva_ventaActionPerformed(evt);
             }
         });
 
-        jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Img/Clientes.png"))); // NOI18N
-        jButton2.setText("Clientes");
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
+        btn_clientes.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Img/Clientes.png"))); // NOI18N
+        btn_clientes.setText("Clientes");
+        btn_clientes.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
+                btn_clientesActionPerformed(evt);
             }
         });
 
-        jButton3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Img/proveedor.png"))); // NOI18N
-        jButton3.setText("Proveedor");
-        jButton3.addActionListener(new java.awt.event.ActionListener() {
+        btn_proveedor.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Img/proveedor.png"))); // NOI18N
+        btn_proveedor.setText("Proveedor");
+        btn_proveedor.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton3ActionPerformed(evt);
+                btn_proveedorActionPerformed(evt);
             }
         });
 
-        jButton4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Img/producto.png"))); // NOI18N
-        jButton4.setText("Productos");
-        jButton4.addActionListener(new java.awt.event.ActionListener() {
+        btn_productos.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Img/producto.png"))); // NOI18N
+        btn_productos.setText("Productos");
+        btn_productos.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton4ActionPerformed(evt);
+                btn_productosActionPerformed(evt);
             }
         });
 
-        jButton5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Img/compras.png"))); // NOI18N
-        jButton5.setText("Ventas");
-        jButton5.addActionListener(new java.awt.event.ActionListener() {
+        btn_ventas.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Img/compras.png"))); // NOI18N
+        btn_ventas.setText("Ventas");
+        btn_ventas.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton5ActionPerformed(evt);
+                btn_ventasActionPerformed(evt);
             }
         });
 
-        jButton6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Img/config.png"))); // NOI18N
-        jButton6.setText("Config");
-        jButton6.addActionListener(new java.awt.event.ActionListener() {
+        btn_config.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Img/config.png"))); // NOI18N
+        btn_config.setText("Config");
+        btn_config.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton6ActionPerformed(evt);
+                btn_configActionPerformed(evt);
             }
         });
 
@@ -348,12 +375,12 @@ public class Sistema extends javax.swing.JFrame {
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel2)
                             .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(jButton3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(jButton4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(jButton5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(jButton6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))))
+                                .addComponent(btn_nueva_venta, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(btn_clientes, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(btn_proveedor, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(btn_productos, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(btn_ventas, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(btn_config, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))))
                 .addContainerGap(38, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
@@ -364,17 +391,17 @@ public class Sistema extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(51, 51, 51)
-                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(btn_nueva_venta, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(jButton2)
+                .addComponent(btn_clientes)
                 .addGap(18, 18, 18)
-                .addComponent(jButton3)
+                .addComponent(btn_proveedor)
                 .addGap(18, 18, 18)
-                .addComponent(jButton4)
+                .addComponent(btn_productos)
                 .addGap(18, 18, 18)
-                .addComponent(jButton5)
+                .addComponent(btn_ventas)
                 .addGap(18, 18, 18)
-                .addComponent(jButton6)
+                .addComponent(btn_config)
                 .addContainerGap(51, Short.MAX_VALUE))
         );
 
@@ -1084,16 +1111,25 @@ public class Sistema extends javax.swing.JFrame {
 
             },
             new String [] {
-                "CODIGO", "DESCRIPCION", "STOCK", "PRECIO", "PROVEEDOR"
+                "id", "CODIGO", "PRODUCTO", "STOCK", "PRECIO", "MARCA"
             }
-        ));
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
         jScrollPane4.setViewportView(table_productos);
         if (table_productos.getColumnModel().getColumnCount() > 0) {
-            table_productos.getColumnModel().getColumn(0).setPreferredWidth(50);
-            table_productos.getColumnModel().getColumn(1).setPreferredWidth(100);
-            table_productos.getColumnModel().getColumn(2).setPreferredWidth(40);
+            table_productos.getColumnModel().getColumn(0).setPreferredWidth(20);
+            table_productos.getColumnModel().getColumn(1).setPreferredWidth(50);
+            table_productos.getColumnModel().getColumn(2).setPreferredWidth(70);
             table_productos.getColumnModel().getColumn(3).setPreferredWidth(50);
-            table_productos.getColumnModel().getColumn(4).setPreferredWidth(60);
+            table_productos.getColumnModel().getColumn(4).setPreferredWidth(50);
+            table_productos.getColumnModel().getColumn(5).setPreferredWidth(50);
         }
 
         btn_guardar_productos.setFont(new java.awt.Font("Tahoma", 2, 11)); // NOI18N
@@ -1432,7 +1468,7 @@ public class Sistema extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, "por favor llene todos los campos para guardar (solo se puede omititr razon social de ser necesario)");
     }//GEN-LAST:event_btn_guardar_clientesActionPerformed
 
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+    private void btn_clientesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_clientesActionPerformed
         // TABLA clientes
         jTabbedPane2.setSelectedIndex(1);
         desactivarCampos(txt_dniruc_clientes,txt_nombre_clientes,txt_telefono_clientes,txt_direccion_clientes,txt_razonsocial_clientes);
@@ -1440,14 +1476,14 @@ public class Sistema extends javax.swing.JFrame {
         limpiarCampos();
         limpiarTabla();
         listar_clientes();
-    }//GEN-LAST:event_jButton2ActionPerformed
+    }//GEN-LAST:event_btn_clientesActionPerformed
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void btn_nueva_ventaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_nueva_ventaActionPerformed
         // TABLA ventas
         jTabbedPane2.setSelectedIndex(0);
-    }//GEN-LAST:event_jButton1ActionPerformed
+    }//GEN-LAST:event_btn_nueva_ventaActionPerformed
 
-    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+    private void btn_proveedorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_proveedorActionPerformed
         // TABLA proveedor
         jTabbedPane2.setSelectedIndex(2);
         txt_id_proveedor.setVisible(true);
@@ -1458,22 +1494,26 @@ public class Sistema extends javax.swing.JFrame {
         limpiarCampos2(txt_id_proveedor,txt_ruc_proveedor,txt_nombre_proveedor,txt_telefono_proveedor,txt_direccion_proveedor,txt_razonsocial_proveedor);
         txt_text_indicTabla.setText("toque 2 veces sobre el nombre del proveedor para seleccionar");
         txt_texto_cambiante.setText("");
-    }//GEN-LAST:event_jButton3ActionPerformed
+    }//GEN-LAST:event_btn_proveedorActionPerformed
 
-    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+    private void btn_productosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_productosActionPerformed
         // TODO add your handling code here:
+ 
+        limpiarTabla();
+        listar_productos();
         jTabbedPane2.setSelectedIndex(3);
-    }//GEN-LAST:event_jButton4ActionPerformed
+        
+    }//GEN-LAST:event_btn_productosActionPerformed
 
-    private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
+    private void btn_ventasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_ventasActionPerformed
         // TODO add your handling code here:
         jTabbedPane2.setSelectedIndex(4);
-    }//GEN-LAST:event_jButton5ActionPerformed
+    }//GEN-LAST:event_btn_ventasActionPerformed
 
-    private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
+    private void btn_configActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_configActionPerformed
         // TODO add your handling code here:
         jTabbedPane2.setSelectedIndex(5);
-    }//GEN-LAST:event_jButton6ActionPerformed
+    }//GEN-LAST:event_btn_configActionPerformed
  ///este ecvento permite capturar una fila de la tabla y mostarla en los campos correspondientes de datos de clientes
     private void table_clientesMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_table_clientesMouseClicked
         // TODO add your handling code here:
@@ -1798,6 +1838,8 @@ public class Sistema extends javax.swing.JFrame {
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btn_clientes;
+    private javax.swing.JButton btn_config;
     private javax.swing.JButton btn_editar_clientes;
     private javax.swing.JButton btn_editar_productos;
     private javax.swing.JButton btn_editar_proveedor;
@@ -1810,19 +1852,17 @@ public class Sistema extends javax.swing.JFrame {
     private javax.swing.JButton btn_guardar_productos;
     private javax.swing.JButton btn_guardar_proveedor;
     private javax.swing.JButton btn_imprimirgenerar_venta;
+    private javax.swing.JButton btn_nueva_venta;
     private javax.swing.JButton btn_nuevo_clientes;
     private javax.swing.JButton btn_nuevo_productos;
     private javax.swing.JButton btn_nuevo_proveedor;
     private javax.swing.JButton btn_pdf_ventas;
+    private javax.swing.JButton btn_productos;
+    private javax.swing.JButton btn_proveedor;
+    private javax.swing.JButton btn_ventas;
     private javax.swing.JComboBox<String> cbx_marca_productos;
     private javax.swing.JCheckBox check_opt_actu;
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton23;
-    private javax.swing.JButton jButton3;
-    private javax.swing.JButton jButton4;
-    private javax.swing.JButton jButton5;
-    private javax.swing.JButton jButton6;
     private javax.swing.JButton jButton_guar_camb;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
