@@ -13,7 +13,7 @@ public class login {
     public login() {
     }
 
-    public login(int id, String nombre, String correo, String password) {
+    public login(int id, String nombre, String correo, String pass) {
         this.id = id;
         this.nombre = nombre;
         this.correo = correo;

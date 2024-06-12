@@ -7,18 +7,18 @@ package Modelo;
  */
 public class productos {
     private int id, stock;
-    private String codigo, pro_nombre, marca;
+    private String codigo, nombre, nombreProveedor;
     private double precio;
 
     public productos() {
     }
 
-    public productos(int id, int stock, String codigo, String pro_nombre, String marca, double precio) {
+    public productos(int id, int stock, String codigo, String nombre, String nombreProveedor, double precio) {
         this.id = id;
         this.stock = stock;
         this.codigo = codigo;
-        this.pro_nombre = pro_nombre;
-        this.marca = marca;
+        this.nombre = nombre;
+        this.nombreProveedor = nombreProveedor;
         this.precio = precio;
     }
 
@@ -46,20 +46,20 @@ public class productos {
         this.codigo = codigo;
     }
 
-    public String getPro_nombre() {
-        return pro_nombre;
+    public String getNombre() {
+        return nombre;
     }
 
-    public void setPro_nombre(String pro_nombre) {
-        this.pro_nombre = pro_nombre;
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
     }
 
-    public String getMarca() {
-        return marca;
+    public String getNombreProveedor() {
+        return nombreProveedor;
     }
 
-    public void setMarca(String marca) {
-        this.marca = marca;
+    public void setNombreProveedor(String nombreProveedor) {
+        this.nombreProveedor = nombreProveedor;
     }
 
     public double getPrecio() {
@@ -69,7 +69,7 @@ public class productos {
     public void setPrecio(double precio) {
         this.precio = precio;
     }
-    
+
     
 
-}
+}    

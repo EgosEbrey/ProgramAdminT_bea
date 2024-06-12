@@ -7,6 +7,7 @@ package Vistas;
 
 import Modelo.login;
 import Modelo.loginDAO;
+import java.awt.event.KeyEvent;
 import javax.swing.JOptionPane;
 
 /**
@@ -80,6 +81,11 @@ public class Login extends javax.swing.JFrame {
         txtPass.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txtPassActionPerformed(evt);
+            }
+        });
+        txtPass.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                txtPassKeyPressed(evt);
             }
         });
 
@@ -241,6 +247,15 @@ public class Login extends javax.swing.JFrame {
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
             validar();
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void txtPassKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtPassKeyPressed
+        // EEESSTEEE FFUUCKINNGG PEDACITO DE CODIGO LOGRA QUE EL USUARIO AL COLOCAR LA CONRASEÑA Y DAR ENTER INGRESE A LA PLATAFORMA COMO SI HUBIERA DADO CLICK EN INGRESAR 
+        //MARAAAAVIIILLOOOOOOSOOOO
+        
+         if (evt.getKeyCode()  == KeyEvent.VK_ENTER){
+            validar();
+         }
+    }//GEN-LAST:event_txtPassKeyPressed
 
     /**
      * @param args the command line arguments
