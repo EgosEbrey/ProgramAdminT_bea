@@ -155,7 +155,7 @@ public class Excel {
     public static void reporte2() {
  
         Workbook book = new XSSFWorkbook();
-        Sheet sheet = book.createSheet("Productos");
+        Sheet sheet = book.createSheet("Clientes");
  
         try {
             InputStream is = new FileInputStream("src/img/logo.png");

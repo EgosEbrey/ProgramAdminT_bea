@@ -5,6 +5,9 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -36,13 +39,14 @@ public class ventasDao {
 }
     
     public int registrarVentas(ventas v){
-        String sql ="INSERT INTO ventas (cliente,vendedor,total) VALUES (?,?,?)";
+        String sql ="INSERT INTO ventas (cliente,vendedor,total,fecha) VALUES (?,?,?,?)";
         try {
             con=cn.GetConnection();
             ps=con.prepareStatement(sql);
             ps.setString(1, v.getCliente());
             ps.setString(2, v.getVendedor());
             ps.setDouble(3, v.getTotal());
+            ps.setString(4, v.getFecha());
             ps.execute();
         } catch (SQLException e) {
             System.out.println(e.toString());
@@ -92,4 +96,27 @@ public class ventasDao {
             return false;
         }
     }
+    
+    public List listarVentas(){
+        List<ventas> listVenta= new ArrayList(); 
+        String sql="SELECT * FROM ventas";
+        try {
+            con = cn.GetConnection();
+            ps = con.prepareStatement(sql);
+            rs = ps.executeQuery();
+            while (rs.next()) {                
+                ventas venta= new ventas ();
+                    venta.setId(rs.getInt("id"));
+                    venta.setCliente(rs.getString("cliente"));
+                    venta.setVendedor(rs.getString("vendedor"));
+                    venta.setTotal(rs.getDouble("total"));
+                    
+                    listVenta.add(venta);
+            }      
+        } catch (SQLException e) {
+            System.out.println(e.toString());
+        }
+        return listVenta;
+    }
+    
 }

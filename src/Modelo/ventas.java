@@ -8,17 +8,26 @@ package Modelo;
 public class ventas {
     private int id;
     private String cliente;
-    private String vendedor;
+    private String vendedor, fecha;
     private double total;
 
     public ventas() {
     }
 
-    public ventas(int id, String cliente, String vendedor, double total) {
+    public ventas(int id, String cliente, String vendedor, double total, String fecha) {
         this.id = id;
         this.cliente = cliente;
         this.vendedor = vendedor;
         this.total = total;
+        this.fecha = fecha;
+    }
+
+    public String getFecha() {
+        return fecha;
+    }
+
+    public void setFecha(String fecha) {
+        this.fecha = fecha;
     }
 
     public int getId() {

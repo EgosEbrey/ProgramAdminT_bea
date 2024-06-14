@@ -102,7 +102,23 @@ public class productosDao {
             }
         } catch (SQLException e) {
             System.out.println(e.toString());
-            System.out.println("error al cargar jCBXmarcaProductos");
+            System.out.println("error al cargar jComboBXProveedorProductos");
+        }
+    }
+    
+    public void consult_codigo_prod_cbx(JComboBox marca) {
+        String sql= "SELECT codigo FROM productos"; //ESTE METODO LLENA LOS ITEM DE UN CBX, los datos aca en este caso vienen de una base de datos y se almacena en un string sql
+        
+        try {
+            con=cn.GetConnection();
+            ps=con.prepareStatement(sql);
+            rs=ps.executeQuery();
+            while (rs.next()){
+                marca.addItem(rs.getString("codigo"));
+            }
+        } catch (SQLException e) {
+            System.out.println(e.toString());
+            System.out.println("error al cargar jComboBXProveedorProductos");
         }
     }
     
@@ -185,6 +201,52 @@ public class productosDao {
             System.out.println(e.toString());
         }
         return prod;
+    }
+    
+    public config buscarDatosConfig(){
+        config conf = new config();
+        String sql= "SELECT * FROM config ";
+        try {
+            con=cn.GetConnection();
+            ps=con.prepareStatement(sql);
+            rs= ps.executeQuery();
+            if (rs.next()){
+                conf.setId(rs.getInt("id"));
+                conf.setNombre(rs.getString("nombre"));
+                conf.setRuc(rs.getString("ruc"));
+                conf.setTelefono(rs.getString("telefono"));
+                conf.setDireccion(rs.getString("direccion"));
+                conf.setRazon(rs.getString("razon"));
+            }
+        } catch (SQLException e) {
+            System.out.println(e.toString());
+        }
+        return conf;
+    }
+    
+    public boolean modificarDatosEmpresa(config conf) {
+        String sql= "UPDATE config SET  ruc=?,nombre=?,telefono=?,direccion=?,razon=? WHERE id=?";
+        try {
+            con = cn.GetConnection();
+            ps=con.prepareStatement(sql);
+            ps.setString(1, conf.getRuc());
+            ps.setString(2, conf.getNombre());
+            ps.setString(3, conf.getTelefono());
+            ps.setString(4, conf.getDireccion());
+            ps.setString(5, conf.getRazon());
+            ps.setInt(6, conf.getId());
+            ps.execute();
+            return true;
+        } catch (SQLException e) {
+            System.out.println(e.toString()+" este error es en modificarProductos()");
+            return false;
+        }finally{
+            try {
+                con.close();
+            } catch (SQLException e) {
+                System.out.println(e.toString()+" este error es en modificarProductos()");
+            }
+        }
     }
 }
 
