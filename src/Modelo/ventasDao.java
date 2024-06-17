@@ -5,11 +5,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  *
@@ -80,7 +77,7 @@ public class ventasDao {
                 }
             }
         return r;
-}
+    }
     
     public boolean actualizarStock(int cant, String cod){
         String sql="UPDATE productos SET stock=? WHERE codigo=?";
@@ -94,7 +91,8 @@ public class ventasDao {
         } catch (SQLException e) {
             System.out.println(e.toString());
             return false;
-        }
+        } 
+
     }
     
     public List listarVentas(){
@@ -115,7 +113,7 @@ public class ventasDao {
             }      
         } catch (SQLException e) {
             System.out.println(e.toString());
-        }
+        } 
         return listVenta;
     }
     

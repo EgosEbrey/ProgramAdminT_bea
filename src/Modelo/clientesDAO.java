@@ -5,7 +5,6 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JOptionPane;
@@ -55,13 +54,13 @@ public class clientesDAO {
             rs = ps.executeQuery();
             while (rs.next()) {                
                 clientes cl = new clientes ();
-                    cl.setId(rs.getInt("id"));
-                    cl.setDni(rs.getString("dni"));
-                    cl.setNombre(rs.getString("nombre"));
-                    cl.setTelefono(rs.getString("telefono"));
-                    cl.setDireccion(rs.getString("direccion"));
-                    cl.setRazon(rs.getString("razon"));
-                    listCl.add(cl);
+                cl.setId(rs.getInt("id"));
+                cl.setDni(rs.getString("dni"));
+                cl.setNombre(rs.getString("nombre"));
+                cl.setTelefono(rs.getString("telefono"));
+                cl.setDireccion(rs.getString("direccion"));
+                cl.setRazon(rs.getString("razon"));
+                listCl.add(cl);
             }      
         } catch (SQLException e) {
             System.out.println(e.toString());
@@ -70,7 +69,7 @@ public class clientesDAO {
     }
     
 ///ESTE METODO DEVUELVE TRUE SI EL DNI INGRESADO POR EL USUARIO YA ESTA REGiSITRADO EN LA BASE DE DATOS
-    public boolean existeDNIRUC(String dni) {
+    public boolean existeDNIRUC(String dni){
       
         boolean existe = false;
         try {
@@ -91,7 +90,7 @@ public class clientesDAO {
     }
     
  //ESTE METODO DEVUELVE tRUE SI EL NOMBRE QUE INGRESA EL USUARIO YA ESTA EN LA BASE DE DATOS   
-    public boolean existeNombre(String nombre) {
+    public boolean existeNombre(String nombre){
       
         boolean existe = false;
         try {
@@ -132,24 +131,8 @@ public class clientesDAO {
     }  
     
     //ESTE METODO ESTA DISEÑADO PARA REESTABLECER EL CONTEO DE ID EN LA BASE DE DATOS DE LOS CLIENTES
-    public void resetAutoIncrement() {
-        try {
-            con = cn.GetConnection(); // tu conexión a la base de datos;
-            Statement stmt = con.createStatement();
-            // Obtener el valor máximo actual de ID
-            rs = stmt.executeQuery("SELECT IFNULL(MAX(id), 0) FROM clientes");
-            int maxId = 0;
-            if (rs.next()) {
-                maxId = rs.getInt(1);
-            }
-            // Reiniciar el contador de auto incremento
-            stmt.executeUpdate("ALTER TABLE clientes AUTO_INCREMENT = " + (maxId + 1));
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
     
-    public boolean modificarClientes(clientes cl) {
+    public boolean modificarClientes(clientes cl){
         String sql= "UPDATE clientes SET  dni=?, nombre=?, telefono=?, direccion=?, razon=? WHERE id=?";
         try {
             con = cn.GetConnection();
@@ -174,7 +157,7 @@ public class clientesDAO {
         }
     }
     
-    public clientes buscar_cliente(String dni) {
+    public clientes buscar_cliente(String dni){
         clientes cl = new clientes ();
         try {
             con = cn.GetConnection(); 

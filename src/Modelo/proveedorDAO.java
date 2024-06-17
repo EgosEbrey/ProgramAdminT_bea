@@ -5,7 +5,6 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -52,18 +51,18 @@ public class proveedorDAO {
             rs = ps.executeQuery();
             while (rs.next()) {                
                 proveedor pr = new proveedor ();
-                    pr.setId(rs.getInt("id"));
-                    pr.setRuc(rs.getString("ruc"));
-                    pr.setNombre(rs.getString("nombre"));
-                    pr.setTelefono(rs.getString("telefono"));
-                    pr.setDireccion(rs.getString("direccion"));
-                    pr.setRazon(rs.getString("razon"));
-                    listPr.add(pr);
+                pr.setId(rs.getInt("id"));
+                pr.setRuc(rs.getString("ruc"));
+                pr.setNombre(rs.getString("nombre"));
+                pr.setTelefono(rs.getString("telefono"));
+                pr.setDireccion(rs.getString("direccion"));
+                pr.setRazon(rs.getString("razon"));
+                listPr.add(pr);
             }      
         } catch (SQLException e) {
             System.out.println(e.toString());
         }
-        return listPr;
+       return listPr;
     }
     
     public boolean eliminar_proveedor(int id){
@@ -86,7 +85,7 @@ public class proveedorDAO {
         }
     }  
     
-    public boolean existeDNIRUC(String dni) {
+    public boolean existeDNIRUC(String dni){
       
         boolean existe = false;
         try {
@@ -107,7 +106,7 @@ public class proveedorDAO {
     }
     
  //ESTE METODO DEVUELVE tRUE SI EL NOMBRE QUE INGRESA EL USUARIO YA ESTA EN LA BASE DE DATOS   
-    public boolean existeNombre(String nombre) {
+    public boolean existeNombre(String nombre){
       
         boolean existe = false;
         try {
@@ -127,27 +126,8 @@ public class proveedorDAO {
         return existe;
     }
     
-    public void resetAutoIncrement2() {
-        /*ESTE FUCKING CODIGO ES EL QUE HACE QUE UNA VEZ ELIMINADO UNA CLIENTE O DATOS DE LA TABLA SE LIMPIE Y QUEDEN 
-        //LOS ID AUT:INCREM hASTA EL VALOR MAS PROXIMO, osea es como una limpieza a los id que ya han sido borrados 
-        para que se vuelvan a usar con nuevos guardados*/
-        try {
-            con = cn.GetConnection(); // tu conexión a la base de datos;
-            Statement stmt = con.createStatement();
-            // Obtener el valor máximo actual de ID
-            rs = stmt.executeQuery("SELECT IFNULL(MAX(id), 0) FROM proveedor");
-            int maxId = 0;
-            if (rs.next()) {
-                maxId = rs.getInt(1);
-            }
-            // Reiniciar el contador de auto incremento
-            stmt.executeUpdate("ALTER TABLE proveedor AUTO_INCREMENT = " + (maxId + 1));
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
     
-    public boolean modificar_proveedor(proveedor pr) {
+    public boolean modificar_proveedor(proveedor pr){
         String sql= "UPDATE proveedor SET  ruc=?, nombre=?, telefono=?, direccion=?, razon=? WHERE id=?";
         try {
             con = cn.GetConnection();

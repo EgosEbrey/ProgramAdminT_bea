@@ -1,12 +1,9 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package Vistas;
 
 import Modelo.login;
 import Modelo.loginDAO;
+import java.awt.HeadlessException;
 import java.awt.event.KeyEvent;
 import javax.swing.JOptionPane;
 
@@ -23,9 +20,10 @@ public class Login extends javax.swing.JFrame {
     }
     
     public void validar(){
-        String correo= txtCorreo.getText();
-        String pass = String.valueOf(txtPass.getPassword());
-        if (!"".equals(correo)||!"".equals(pass)){
+        try {
+            String correo= txtCorreo.getText();
+            String pass = String.valueOf(txtPass.getPassword());
+             if (!"".equals(correo)||!"".equals(pass)){
             lg = login.log(correo, pass);
             if (lg.getCorreo()!=null && lg.getPassword()!=null){
                 Sistema sis = new Sistema(lg);
@@ -34,6 +32,10 @@ public class Login extends javax.swing.JFrame {
             }else
                 JOptionPane.showMessageDialog(null, "correo o cntraseña invalida");
         }
+        } catch (HeadlessException e) {
+            System.out.println(e.toString());
+        }
+        
     }
     /**
      * This method is called from within the constructor to initialize the form.
@@ -87,10 +89,12 @@ public class Login extends javax.swing.JFrame {
 
         jPanel3.setBackground(new java.awt.Color(51, 51, 51));
 
+        jLabel5.setBackground(new java.awt.Color(153, 153, 255));
         jLabel5.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        jLabel5.setForeground(new java.awt.Color(255, 153, 255));
         jLabel5.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Img/facebook.png"))); // NOI18N
-        jLabel5.setText("Siguenos en ");
+        jLabel5.setText("Siguenos en");
         jLabel5.setHorizontalTextPosition(javax.swing.SwingConstants.LEFT);
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
@@ -117,6 +121,7 @@ public class Login extends javax.swing.JFrame {
         jPanel4.setBackground(new java.awt.Color(204, 0, 204));
 
         jLabel6.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        jLabel6.setForeground(new java.awt.Color(51, 51, 51));
         jLabel6.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Img/instagram.png"))); // NOI18N
         jLabel6.setText("Siguenos en  ");
@@ -255,7 +260,11 @@ public class Login extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-            validar();
+                try {
+                    validar();
+                } catch (Exception ex){
+                    System.out.println(ex.toString());
+                }
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void txtPassKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtPassKeyPressed
@@ -263,7 +272,11 @@ public class Login extends javax.swing.JFrame {
         //MARAAAAVIIILLOOOOOOSOOOO
         
          if (evt.getKeyCode()  == KeyEvent.VK_ENTER){
-            validar();
+             try {
+                 validar();
+             } catch (Exception ex){
+                    System.out.println(ex.toString());
+             }
          }
     }//GEN-LAST:event_txtPassKeyPressed
 

@@ -6,7 +6,6 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartFrame;
 import org.jfree.chart.JFreeChart;
@@ -18,13 +17,13 @@ import org.jfree.data.general.DefaultPieDataset;
  */
 public class grafica {
     
-    public static void graficar(String fecha){
+    public static void graficar(String fecha) throws ClassNotFoundException {
         
         Connection con;
         conexion cn = new conexion();
         PreparedStatement ps;
         ResultSet rs;
-        
+
         try {
             String sql= "SELECT total FROM ventas WHERE fecha = ?";
             con = cn.GetConnection();

@@ -97,7 +97,9 @@ public class Excel {
                 celdaEnzabezado.setCellValue(cabecera[i]);
             }
  
-            conexion con = new conexion();
+            
+            try {
+                conexion con = new conexion();
             PreparedStatement ps;
             ResultSet rs;
             Connection conn = con.GetConnection();
@@ -133,6 +135,11 @@ public class Excel {
             sheet.autoSizeColumn(2);
             sheet.autoSizeColumn(3);
             sheet.autoSizeColumn(4);
+            } catch (Exception e) {
+                System.out.println(e.toString());
+                System.out.println("error en la clase excel");
+            }
+            
             
             sheet.setZoom(150);
             String fileName = "productos";
@@ -146,7 +153,7 @@ public class Excel {
  
         } catch (FileNotFoundException ex) {
             Logger.getLogger(Excel.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (IOException | SQLException ex) {
+        } catch (IOException ex) {
             Logger.getLogger(Excel.class.getName()).log(Level.SEVERE, null, ex);
         }
  
@@ -216,7 +223,12 @@ public class Excel {
             conexion con = new conexion();
             PreparedStatement ps;
             ResultSet rs;
-            Connection conn = con.GetConnection();
+            try {
+                Connection conn = con.GetConnection();
+                ps = conn.prepareStatement("SELECT dni, nombre, telefono, direccion, razon FROM clientes");
+                rs = ps.executeQuery();
+           
+            
  
             int numFilaDatos = 5;
  
@@ -226,8 +238,8 @@ public class Excel {
             datosEstilo.setBorderRight(BorderStyle.THIN);
             datosEstilo.setBorderBottom(BorderStyle.THIN);
  
-            ps = conn.prepareStatement("SELECT dni, nombre, telefono, direccion, razon FROM clientes");
-            rs = ps.executeQuery();
+            
+            
  
             int numCol = rs.getMetaData().getColumnCount();
  
@@ -250,6 +262,10 @@ public class Excel {
             sheet.autoSizeColumn(3);
             sheet.autoSizeColumn(4);
             
+             } catch (Exception e) {
+                 System.out.println(e.toString());
+            }
+            
             sheet.setZoom(150);
             String fileName = "clientes";
             String home = System.getProperty("user.home");
@@ -262,7 +278,7 @@ public class Excel {
  
         } catch (FileNotFoundException ex) {
             Logger.getLogger(Excel.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (IOException | SQLException ex) {
+        } catch (IOException ex) {
             Logger.getLogger(Excel.class.getName()).log(Level.SEVERE, null, ex);
         }
  

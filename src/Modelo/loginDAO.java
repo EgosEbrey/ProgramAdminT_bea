@@ -52,7 +52,6 @@ public class loginDAO {
         } catch (SQLException e) {
             System.out.println(e.toString());
             return false;
-        }
-    
+        }    
     }
 }

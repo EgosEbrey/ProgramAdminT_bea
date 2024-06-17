@@ -5,7 +5,6 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JComboBox;
@@ -43,10 +42,9 @@ public class productosDao {
                 System.out.println(e.toString());
             }
         }
-        
     }
     
-    public boolean existeCodigo(String cod) {
+    public boolean existeCodigo(String cod){
       
         boolean existe = false;
         try {
@@ -57,9 +55,6 @@ public class productosDao {
             if (rs.next() && rs.getInt(1) > 0) {
                 existe = true;
             }
-            rs.close();
-            ps.close();
-            con.close();
         } catch (SQLException e) {
             System.out.println(e.toString());
         }
@@ -86,7 +81,7 @@ public class productosDao {
             }      
         } catch (SQLException e) {
             System.out.println(e.toString());
-        }
+        } 
         return listPro;
     }
     
@@ -103,7 +98,7 @@ public class productosDao {
         } catch (SQLException e) {
             System.out.println(e.toString());
             System.out.println("error al cargar jComboBXProveedorProductos");
-        }
+        } 
     }
     
     public void consult_codigo_prod_cbx(JComboBox marca) {
@@ -119,7 +114,7 @@ public class productosDao {
         } catch (SQLException e) {
             System.out.println(e.toString());
             System.out.println("error al cargar jComboBXProveedorProductos");
-        }
+        } 
     }
     
     public boolean eliminarProductos(int id){
@@ -141,23 +136,6 @@ public class productosDao {
             }
         }
     }  
-    
-    public void resetAutoIncrement3() {
-        try {
-            con = cn.GetConnection(); // tu conexión a la base de datos;
-            Statement stmt = con.createStatement();
-            // Obtener el valor máximo actual de ID
-            rs = stmt.executeQuery("SELECT IFNULL(MAX(id), 0) FROM productos");
-            int maxId = 0;
-            if (rs.next()) {
-                maxId = rs.getInt(1);
-            }
-            // Reiniciar el contador de auto incremento
-            stmt.executeUpdate("ALTER TABLE productos AUTO_INCREMENT = " + (maxId + 1));
-        } catch (SQLException e) {
-            System.out.println(e.toString());
-        }
-    }
     
     public boolean modificarProductos(productos pro) {
         String sql= "UPDATE productos SET  codigo=?,nombre=?,nombreProveedor=?,stock=?,precio=? WHERE id=?";
