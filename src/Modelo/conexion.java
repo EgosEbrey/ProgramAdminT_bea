@@ -13,12 +13,29 @@ import javax.swing.JOptionPane;
  * @author ebrey
  */
 public class conexion {
+    
     Connection con; 
+    
+    String user = "EbreyM";
+    String password = "enyerbale12";
+    String urlexpri = "jdbc:mysql://192.168.0.6:3306/sistema_ventas?serveTimezone=UTC";
+
     public Connection GetConnection() {
-        
-        //
-        
-        try {
+
+       try {
+            // Cargar el controlador de MySQL
+            Class<?> forName;
+            try {
+                forName = Class.forName("com.mysql.cj.jdbc.Driver");
+            } catch (ClassNotFoundException ex) {
+                Logger.getLogger(conexion.class.getName()).log(Level.SEVERE, null, ex);
+            }            
+            con = DriverManager.getConnection(urlexpri, user, password);
+            System.out.println("Conexión exitosa!");
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, "Error de conexion");
+        }
+        /*try {
             Class<?> forName;
             try {
                 forName = Class.forName("com.mysql.cj.jdbc.Driver");
@@ -27,7 +44,7 @@ public class conexion {
             }
             //String access= "jdbc:ucanaccess://C:/Users/ebrey/Desktop/libreria_proye_jv/Database1.accdb";
             String my_bd= "jdbc:mysql://localhost:3306/sistema_ventas?serveTimezone=UTC";
-            con = DriverManager.getConnection(my_bd, "root","");  // con = DriverManager.getConnection(access);  //    
+            con = DriverManager.getConnection(my_bd, "root","");  //    con = DriverManager.getConnection(access);  //    
             //JOptionPane.showMessageDialog(null, "sera acan");
             return con;
             
@@ -35,7 +52,7 @@ public class conexion {
             System.out.println(e.toString());
             JOptionPane.showMessageDialog(null, "error conexion");
             System.exit(1);
-        } 
-        return null;
+        } */
+        return con;
     }
 }

@@ -17,7 +17,7 @@ import org.jfree.data.general.DefaultPieDataset;
  */
 public class grafica {
     
-    public static void graficar(String fecha) throws ClassNotFoundException {
+    public static void graficar(String fecha){
         
         Connection con;
         conexion cn = new conexion();

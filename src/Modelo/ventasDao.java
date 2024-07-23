@@ -7,6 +7,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import javax.swing.JTextField;
 
 /**
  *
@@ -101,6 +102,29 @@ public class ventasDao {
         try {
             con = cn.GetConnection();
             ps = con.prepareStatement(sql);
+            rs = ps.executeQuery();
+            while (rs.next()) {                
+                ventas venta= new ventas ();
+                    venta.setId(rs.getInt("id"));
+                    venta.setCliente(rs.getString("cliente"));
+                    venta.setVendedor(rs.getString("vendedor"));
+                    venta.setTotal(rs.getDouble("total"));
+                    
+                    listVenta.add(venta);
+            }      
+        } catch (SQLException e) {
+            System.out.println(e.toString());
+        } 
+        return listVenta;
+    }
+    
+        public List listarVentasNro(String id){
+        List<ventas> listVenta= new ArrayList(); 
+        String sql="SELECT * FROM ventas WHERE id=?";
+        try {
+            con = cn.GetConnection();
+            ps = con.prepareStatement(sql);
+            ps.setString(1,id);
             rs = ps.executeQuery();
             while (rs.next()) {                
                 ventas venta= new ventas ();

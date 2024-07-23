@@ -14,7 +14,9 @@ public class Admin_ventas {
      */
     public static void main(String[] args) {
         
-       Login lg = new Login();
-       lg.setVisible(true);
+      Login lg = new Login();
+      lg.setVisible(true);
+       //conexion cn= new conexion();
+       //cn.GetConnection();
     }
 }

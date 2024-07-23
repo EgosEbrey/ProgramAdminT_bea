@@ -20,7 +20,7 @@ public class Login extends javax.swing.JFrame {
     }
     
     public void validar(){
-        try {
+       try {
             String correo= txtCorreo.getText();
             String pass = String.valueOf(txtPass.getPassword());
              if (!"".equals(correo)||!"".equals(pass)){
