@@ -5,6 +5,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
@@ -53,5 +55,55 @@ public class loginDAO {
             System.out.println(e.toString());
             return false;
         }    
+    }
+    
+    public List listarUsuarios(){
+        List<login> listUsua= new ArrayList(); 
+        String sql="SELECT * FROM usuarios";
+        try {
+            con = cn.GetConnection();
+            ps = con.prepareStatement(sql);
+            rs = ps.executeQuery();
+            while (rs.next()) {                
+                login usua= new login ();
+                usua.setId(rs.getInt("id"));
+                usua.setNombre(rs.getString("nombre"));
+                usua.setCorreo(rs.getString("correo"));
+                usua.setPassword(rs.getString("password"));
+                usua.setRol(rs.getString("rol"));
+
+                listUsua.add(usua);
+            }      
+        } catch (SQLException e) {
+            System.out.println(e.toString());
+        } finally{
+                try {
+                    con.close();
+                    System.out.println("con.close.execute");
+                } catch (SQLException e) {
+                    System.out.println(e.toString());
+                }
+        }
+        return listUsua;
+    }
+    
+    public boolean eliminarUsuarios(int id){
+        String sql= "DELETE FROM usuarios WHERE id=?";
+        try {
+            con = cn.GetConnection();
+            ps = con.prepareStatement(sql);
+            ps.setInt(1, id);
+            ps.execute();
+            return true;
+        } catch (SQLException e) {
+            System.out.println(e.toString());
+            return false;
+        }finally{
+            try {
+                con.close();
+            } catch (SQLException ex) {
+                System.out.println(ex.toString());
+            }
+        }
     }
 }

@@ -2,12 +2,19 @@ package Modelo;
 
 import java.awt.event.KeyEvent;
 import javax.swing.JTextField;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 
 /**
  *
  * @author ebrey
  */
 public class eventos {
+    Connection con ;
+    conexion cn=new conexion();
+    PreparedStatement ps;
+    ResultSet rs;
 
     public void verificarSoloTextKeyPress(KeyEvent evt) {
 // declaramos una variable y le asignamos un evento
@@ -24,15 +31,17 @@ public class eventos {
         if ((car < '0' || car > '9') && (car != (char) KeyEvent.VK_BACK_SPACE)) {
             evt.consume();
         }
+        
     }
-
+    
     public void verifNumberDecimalKeyPress(KeyEvent evt, JTextField textField) {
 // declaramos una variable y le asignamos un evento
         char car = evt.getKeyChar();
-        if ((car < '0' || car > '9') && textField.getText().contains(".") && (car != (char) KeyEvent.VK_BACK_SPACE)) {
+        if ((car < '0' || car > '9') && textField.getText().toString().contains(".") && (car != (char) KeyEvent.VK_BACK_SPACE)) {
             evt.consume();
         } else if ((car < '0' || car > '9') && (car != '.') && (car != (char) KeyEvent.VK_BACK_SPACE)) {
             evt.consume();
         }
     }
+    
 }

@@ -16,9 +16,9 @@ public class conexion {
     
     Connection con; 
     
-    String user = "EbreyM";
-    String password = "enyerbale12";
-    String urlexpri = "jdbc:mysql://192.168.0.6:3306/sistema_ventas?serveTimezone=UTC";
+    String user = "root";
+    String password = "";
+    String urlexpri = "jdbc:mysql://localhost:3306/sistema_ventas?serveTimezone=UTC";
 
     public Connection GetConnection() {
 

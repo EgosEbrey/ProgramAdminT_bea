@@ -15,6 +15,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import Modelo.conexion;
+import java.awt.HeadlessException;
 import org.apache.poi.ss.usermodel.BorderStyle;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellStyle;
@@ -42,9 +43,10 @@ public class Excel {
         Sheet sheet = book.createSheet("Productos");
  
         try {
+            //ACA SE INTENTA RECUPERAR LA IMAGEN PARA COLOCRLA EN EL REPORTE
             String home = System.getProperty("user.home");
             int imgIndex;
-            try (InputStream is = new FileInputStream(home+"/Downloads/ebrey.png")) {
+            try (InputStream is = new FileInputStream(home+"/Documents/reportes/ebrey.png")) {
                 byte[] bytes = IOUtils.toByteArray(is);
                 imgIndex = book.addPicture(bytes, Workbook.PICTURE_TYPE_PNG);
             }
@@ -147,12 +149,27 @@ public class Excel {
                 System.out.println("error en la clase excel");
             }
             
-            
             sheet.setZoom(150);
-            String fileName = "productos";
+            String fileName = "reporteProductos";
             String home = System.getProperty("user.home");
-            File file = new File(home + "/Downloads/" + fileName + ".xlsx");
+            String rutaCarpetas = home + "/Documents/reportes/";
+            //se hace esto para poder crear la carpeta si no esta creada
+            File rutaCompleta = new File(rutaCarpetas);
+        
+            // ACA SE CREA EL DIRECTORIO SI NO EXISTE
+            if (!rutaCompleta.exists()) {
+                rutaCompleta.mkdirs();
+            }
+            
+            File file = new File(home + "/Documents/reportes/" + fileName + ".xlsx");
+            int unContador = 1;
+             // ACA se verifica si el archivo existe, si existe se vueelve a crear sumandole el contador, asi hasta que llegue a un nro que ya no exista y se cree satisfactiriamente
+            while (file.exists()) {
+                file = new File(rutaCarpetas + fileName + unContador + ".xlsx");
+                unContador++;
+            }
             try {
+          
                 FileOutputStream fileOut = new FileOutputStream(file);
                 book.write(fileOut);
                 fileOut.close();
@@ -173,14 +190,14 @@ public class Excel {
         Sheet sheet = book.createSheet("Clientes");
  
         try {
+            //ACA SE INTENTA RECUPERAR LA IMAGEN PARA COLOCRLA EN EL REPORTE
             String home = System.getProperty("user.home");
             int imgIndex;
-            try (InputStream is = new FileInputStream(home+"/Downloads/ebrey.png")) {
+            try (InputStream is = new FileInputStream(home+"/Documents/reportes/ebrey.png")) {
                 byte[] bytes = IOUtils.toByteArray(is);
                 imgIndex = book.addPicture(bytes, Workbook.PICTURE_TYPE_PNG);
             }
- 
-            CreationHelper help = book.getCreationHelper();
+             CreationHelper help = book.getCreationHelper();
             Drawing draw = sheet.createDrawingPatriarch();
  
             ClientAnchor anchor = help.createClientAnchor();
@@ -188,6 +205,12 @@ public class Excel {
             anchor.setRow1(1);
             Picture pict = draw.createPicture(anchor, imgIndex);
             pict.resize(1, 3);
+        } catch (IOException e) {
+            System.out.println(e.toString());
+        }
+            
+ 
+           
  
             CellStyle tituloEstilo = book.createCellStyle();
             tituloEstilo.setAlignment(HorizontalAlignment.CENTER);
@@ -201,7 +224,7 @@ public class Excel {
             Row filaTitulo = sheet.createRow(1);
             Cell celdaTitulo = filaTitulo.createCell(1);
             celdaTitulo.setCellStyle(tituloEstilo);
-            celdaTitulo.setCellValue("Reporte de clientes");
+            celdaTitulo.setCellValue("Reporte de Clientes");
  
             sheet.addMergedRegion(new CellRangeAddress(1, 2, 1, 3));
  
@@ -230,15 +253,12 @@ public class Excel {
                 celdaEnzabezado.setCellValue(cabecera[i]);
             }
  
-            conexion con = new conexion();
+            
+            try {
+                conexion con = new conexion();
             PreparedStatement ps;
             ResultSet rs;
-            try {
-                Connection conn = con.GetConnection();
-                ps = conn.prepareStatement("SELECT dni, nombre, telefono, direccion, razon FROM clientes");
-                rs = ps.executeQuery();
-           
-            
+            Connection conn = con.GetConnection();
  
             int numFilaDatos = 5;
  
@@ -248,8 +268,8 @@ public class Excel {
             datosEstilo.setBorderRight(BorderStyle.THIN);
             datosEstilo.setBorderBottom(BorderStyle.THIN);
  
-            
-            
+            ps = conn.prepareStatement("SELECT dni, nombre, telefono, direccion, razon FROM clientes");
+            rs = ps.executeQuery();
  
             int numCol = rs.getMetaData().getColumnCount();
  
@@ -271,42 +291,56 @@ public class Excel {
             sheet.autoSizeColumn(2);
             sheet.autoSizeColumn(3);
             sheet.autoSizeColumn(4);
-            
-             } catch (SQLException e) {
-                 System.out.println(e.toString());
+            } catch (SQLException e) {
+                System.out.println(e.toString());
+                System.out.println("error en la clase excel");
             }
             
             sheet.setZoom(150);
-            String fileName = "clientes";
-            File file = new File(home + "/Downloads/" + fileName + ".xlsx");
-            try (FileOutputStream fileOut = new FileOutputStream(file)) {
-                book.write(fileOut);
+            String fileName = "reporteClientes";
+            String home = System.getProperty("user.home");
+            String rutaCarpetas = home + "/Documents/reportes/";
+            //se hace esto para poder crear la carpeta si no esta creada
+            File rutaCompleta = new File(rutaCarpetas);
+        
+            // ACA SE CREA EL DIRECTORIO SI NO EXISTE
+            if (!rutaCompleta.exists()) {
+                rutaCompleta.mkdirs();
             }
-            Desktop.getDesktop().open(file);
-            JOptionPane.showMessageDialog(null, "Reporte Generado");
+            
+            File file = new File(home + "/Documents/reportes/" + fileName + ".xlsx");
+            int unContador = 1;
+             // ACA se verifica si el archivo existe, si existe se vueelve a crear sumandole el contador, asi hasta que llegue a un nro que ya no exista y se cree satisfactiriamente
+            while (file.exists()) {
+                file = new File(rutaCarpetas + fileName + unContador + ".xlsx");
+                unContador++;
+            }
+            try {
+          
+                FileOutputStream fileOut = new FileOutputStream(file);
+                book.write(fileOut);
+                fileOut.close();
+                Desktop.getDesktop().open(file);
+                JOptionPane.showMessageDialog(null, "Reporte Generado");
  
-        } catch (FileNotFoundException ex) {
-            Logger.getLogger(Excel.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (IOException ex) {
-            Logger.getLogger(Excel.class.getName()).log(Level.SEVERE, null, ex);
+             } catch (HeadlessException | IOException e) {
+                JOptionPane.showMessageDialog(null, "error generando reporte");
         }
- 
     }
     
     public static void reporte3() {
- 
         Workbook book = new XSSFWorkbook();
-        Sheet sheet = book.createSheet("Proveedor");
+        Sheet sheet = book.createSheet("Proveedores");
  
         try {
+            //ACA SE INTENTA RECUPERAR LA IMAGEN PARA COLOCRLA EN EL REPORTE
             String home = System.getProperty("user.home");
             int imgIndex;
-            try (InputStream is = new FileInputStream(home+"/Downloads/ebrey.png")) {
+            try (InputStream is = new FileInputStream(home+"/Documents/reportes/ebrey.png")) {
                 byte[] bytes = IOUtils.toByteArray(is);
                 imgIndex = book.addPicture(bytes, Workbook.PICTURE_TYPE_PNG);
             }
- 
-            CreationHelper help = book.getCreationHelper();
+             CreationHelper help = book.getCreationHelper();
             Drawing draw = sheet.createDrawingPatriarch();
  
             ClientAnchor anchor = help.createClientAnchor();
@@ -314,6 +348,12 @@ public class Excel {
             anchor.setRow1(1);
             Picture pict = draw.createPicture(anchor, imgIndex);
             pict.resize(1, 3);
+        } catch (IOException e) {
+            System.out.println(e.toString());
+        }
+            
+ 
+           
  
             CellStyle tituloEstilo = book.createCellStyle();
             tituloEstilo.setAlignment(HorizontalAlignment.CENTER);
@@ -327,7 +367,7 @@ public class Excel {
             Row filaTitulo = sheet.createRow(1);
             Cell celdaTitulo = filaTitulo.createCell(1);
             celdaTitulo.setCellStyle(tituloEstilo);
-            celdaTitulo.setCellValue("Reporte de proveedores");
+            celdaTitulo.setCellValue("Reporte de Proveedores");
  
             sheet.addMergedRegion(new CellRangeAddress(1, 2, 1, 3));
  
@@ -356,15 +396,12 @@ public class Excel {
                 celdaEnzabezado.setCellValue(cabecera[i]);
             }
  
-            conexion con = new conexion();
+            
+            try {
+                conexion con = new conexion();
             PreparedStatement ps;
             ResultSet rs;
-            try {
-                Connection conn = con.GetConnection();
-                ps = conn.prepareStatement("SELECT ruc, nombre, telefono, direccion, razon FROM proveedor");
-                rs = ps.executeQuery();
-           
-            
+            Connection conn = con.GetConnection();
  
             int numFilaDatos = 5;
  
@@ -374,8 +411,8 @@ public class Excel {
             datosEstilo.setBorderRight(BorderStyle.THIN);
             datosEstilo.setBorderBottom(BorderStyle.THIN);
  
-            
-            
+            ps = conn.prepareStatement("SELECT ruc, nombre, telefono, direccion, razon FROM proveedor");
+            rs = ps.executeQuery();
  
             int numCol = rs.getMetaData().getColumnCount();
  
@@ -397,42 +434,56 @@ public class Excel {
             sheet.autoSizeColumn(2);
             sheet.autoSizeColumn(3);
             sheet.autoSizeColumn(4);
-            
-             } catch (SQLException e) {
-                 System.out.println(e.toString());
+            } catch (SQLException e) {
+                System.out.println(e.toString());
+                System.out.println("error en la clase excel");
             }
             
             sheet.setZoom(150);
-            String fileName = "proveedor";
-            File file = new File(home + "/Downloads/" + fileName + ".xlsx");
-            try (FileOutputStream fileOut = new FileOutputStream(file)) {
-                book.write(fileOut);
+            String fileName = "reporteProveedores";
+            String home = System.getProperty("user.home");
+            String rutaCarpetas = home + "/Documents/reportes/";
+            //se hace esto para poder crear la carpeta si no esta creada
+            File rutaCompleta = new File(rutaCarpetas);
+        
+            // ACA SE CREA EL DIRECTORIO SI NO EXISTE
+            if (!rutaCompleta.exists()) {
+                rutaCompleta.mkdirs();
             }
-            Desktop.getDesktop().open(file);
-            JOptionPane.showMessageDialog(null, "Reporte Generado");
+            
+            File file = new File(home + "/Documents/reportes/" + fileName + ".xlsx");
+            int unContador = 1;
+             // ACA se verifica si el archivo existe, si existe se vueelve a crear sumandole el contador, asi hasta que llegue a un nro que ya no exista y se cree satisfactiriamente
+            while (file.exists()) {
+                file = new File(rutaCarpetas + fileName + unContador + ".xlsx");
+                unContador++;
+            }
+            try {
+          
+                FileOutputStream fileOut = new FileOutputStream(file);
+                book.write(fileOut);
+                fileOut.close();
+                Desktop.getDesktop().open(file);
+                JOptionPane.showMessageDialog(null, "Reporte Generado");
  
-        } catch (FileNotFoundException ex) {
-            Logger.getLogger(Excel.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (IOException ex) {
-            Logger.getLogger(Excel.class.getName()).log(Level.SEVERE, null, ex);
+             } catch (HeadlessException | IOException e) {
+                JOptionPane.showMessageDialog(null, "error generando reporte");
         }
- 
     }
     
     public static void reporte4() {
- 
         Workbook book = new XSSFWorkbook();
-        Sheet sheet = book.createSheet("ventas");
+        Sheet sheet = book.createSheet("Ventas");
  
         try {
+            //ACA SE INTENTA RECUPERAR LA IMAGEN PARA COLOCRLA EN EL REPORTE
             String home = System.getProperty("user.home");
             int imgIndex;
-            try (InputStream is = new FileInputStream(home+"/Downloads/ebrey.png")) {
+            try (InputStream is = new FileInputStream(home+"/Documents/reportes/ebrey.png")) {
                 byte[] bytes = IOUtils.toByteArray(is);
                 imgIndex = book.addPicture(bytes, Workbook.PICTURE_TYPE_PNG);
             }
- 
-            CreationHelper help = book.getCreationHelper();
+             CreationHelper help = book.getCreationHelper();
             Drawing draw = sheet.createDrawingPatriarch();
  
             ClientAnchor anchor = help.createClientAnchor();
@@ -440,6 +491,12 @@ public class Excel {
             anchor.setRow1(1);
             Picture pict = draw.createPicture(anchor, imgIndex);
             pict.resize(1, 3);
+        } catch (IOException e) {
+            System.out.println(e.toString());
+        }
+            
+ 
+           
  
             CellStyle tituloEstilo = book.createCellStyle();
             tituloEstilo.setAlignment(HorizontalAlignment.CENTER);
@@ -482,15 +539,12 @@ public class Excel {
                 celdaEnzabezado.setCellValue(cabecera[i]);
             }
  
-            conexion con = new conexion();
+            
+            try {
+                conexion con = new conexion();
             PreparedStatement ps;
             ResultSet rs;
-            try {
-                Connection conn = con.GetConnection();
-                ps = conn.prepareStatement("SELECT id, cliente, vendedor, total, fecha FROM ventas");
-                rs = ps.executeQuery();
-           
-            
+            Connection conn = con.GetConnection();
  
             int numFilaDatos = 5;
  
@@ -500,8 +554,8 @@ public class Excel {
             datosEstilo.setBorderRight(BorderStyle.THIN);
             datosEstilo.setBorderBottom(BorderStyle.THIN);
  
-            
-            
+            ps = conn.prepareStatement("SELECT id, cliente, vendedor, total, fecha FROM ventas");
+            rs = ps.executeQuery();
  
             int numCol = rs.getMetaData().getColumnCount();
  
@@ -523,25 +577,40 @@ public class Excel {
             sheet.autoSizeColumn(2);
             sheet.autoSizeColumn(3);
             sheet.autoSizeColumn(4);
-            
-             } catch (SQLException e) {
-                 System.out.println(e.toString());
+            } catch (SQLException e) {
+                System.out.println(e.toString());
+                System.out.println("error en la clase excel");
             }
             
             sheet.setZoom(150);
-            String fileName = "ventas";
-            File file = new File(home + "/Downloads/" + fileName + ".xlsx");
-            try (FileOutputStream fileOut = new FileOutputStream(file)) {
-                book.write(fileOut);
+            String fileName = "reporteVentas";
+            String home = System.getProperty("user.home");
+            String rutaCarpetas = home + "/Documents/reportes/";
+            //se hace esto para poder crear la carpeta si no esta creada
+            File rutaCompleta = new File(rutaCarpetas);
+        
+            // ACA SE CREA EL DIRECTORIO SI NO EXISTE
+            if (!rutaCompleta.exists()) {
+                rutaCompleta.mkdirs();
             }
-            Desktop.getDesktop().open(file);
-            JOptionPane.showMessageDialog(null, "Reporte Generado");
+            
+            File file = new File(home + "/Documents/reportes/" + fileName + ".xlsx");
+            int unContador = 1;
+             // ACA se verifica si el archivo existe, si existe se vueelve a crear sumandole el contador, asi hasta que llegue a un nro que ya no exista y se cree satisfactiriamente
+            while (file.exists()) {
+                file = new File(rutaCarpetas + fileName + unContador + ".xlsx");
+                unContador++;
+            }
+            try {
+          
+                FileOutputStream fileOut = new FileOutputStream(file);
+                book.write(fileOut);
+                fileOut.close();
+                Desktop.getDesktop().open(file);
+                JOptionPane.showMessageDialog(null, "Reporte Generado");
  
-        } catch (FileNotFoundException ex) {
-            Logger.getLogger(Excel.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (IOException ex) {
-            Logger.getLogger(Excel.class.getName()).log(Level.SEVERE, null, ex);
+             } catch (HeadlessException | IOException e) {
+                JOptionPane.showMessageDialog(null, "error generando reporte");
         }
- 
     }
 }
