@@ -28,6 +28,7 @@ import com.itextpdf.text.Phrase;
 import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
+import java.awt.Color;
 import java.awt.Desktop;
 import java.awt.HeadlessException;
 import java.awt.event.ItemEvent;
@@ -40,8 +41,10 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import javax.swing.BorderFactory;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
+import javax.swing.UIManager;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.table.DefaultTableModel;
@@ -116,6 +119,9 @@ public class Sistema extends javax.swing.JFrame {
             }
         });
         
+        setExtendedState(Sistema.MAXIMIZED_BOTH);
+        setResizable(false);
+        
         checkboxProduct.addItemListener((ItemEvent e) -> {
             if (e.getStateChange() == ItemEvent.SELECTED) {
                 if ("".equals(txt_id_productos.getText())){
@@ -129,7 +135,7 @@ public class Sistema extends javax.swing.JFrame {
                         txt_pro_nombre.setEditable(true);
                         txt_Stock_productos.setEditable(true);
                         txt_precio_productos.setEditable(true);
-                        JOptionPane.showMessageDialog(null, "Campos actvios para escritura");
+                        JOptionPane.showMessageDialog(null, "Campos activos para escritura");
                         txt_codigo_productos.requestFocusInWindow();
                     }else {
                         checkboxProduct.setState(false);
@@ -144,11 +150,32 @@ public class Sistema extends javax.swing.JFrame {
             }
         });
         
+         // Necesario para que el color de fondo se muestre
+
+jLabel13.addMouseListener(new java.awt.event.MouseAdapter() {
+    @Override
+    public void mousePressed(java.awt.event.MouseEvent evt) {
+        jLabel13.setOpaque(true);
+        jLabel13.setBackground(Color.BLUE); // Cambia a un color más oscuro
+        jLabel13.setBorder(BorderFactory.createLoweredBevelBorder()); // Efecto tridimensional
+       // jLabel13.setOpaque(false);
+    }
+
+    @Override
+    public void mouseReleased(java.awt.event.MouseEvent evt) {
+        
+        jLabel13.setBackground(Color.GREEN);         //////UIManager.getColor("jLabel13.background")); // Restablece el color original
+        jLabel13.setBorder(UIManager.getBorder("jLabel13.border")); // Restablece el borde original
+        
+    }
+    
+});
+        
         this.setLocationRelativeTo(null);
         //jLabel54.setText("Gest de Productos");
         jButton_guar_camb.setVisible(false);
         btn_guardar_config.setVisible(false);
-        proDao.consult_proveed_prod_cbx(cbx_proveedor); /// ACA SE ESTA LLAMANDO AL METODO QUE LLENA LOS CAMPOS DEL jCOMBOX EN "MARCA" DE PRODUCTOS 
+        //proDao.consult_proveed_prod_cbx(cbx_proveedor); /// ACA SE ESTA LLAMANDO AL METODO QUE LLENA LOS CAMPOS DEL jCOMBOX EN "MARCA" DE PRODUCTOS 
         AutoCompleteDecorator.decorate(cbx_proveedor);   ///CON ESTA DECLARACION SE LOGRA QUE EN EL COMOBX DE MARCAPRODUCTOS AL ESCRIBIR SE VAYAN MOSTRANDO las opciones que estan disponibles
         ///AGREGADO
         proDao.consult_codigo_prod_cbx(comboBoxProduct);
@@ -494,7 +521,6 @@ public class Sistema extends javax.swing.JFrame {
         jLabel57 = new javax.swing.JLabel();
         jLabel58 = new javax.swing.JLabel();
         jLabel59 = new javax.swing.JLabel();
-        jTextBuscCodProd = new javax.swing.JTextField();
         jPanel8 = new javax.swing.JPanel();
         jScrollPane5 = new javax.swing.JScrollPane();
         table_ventas = new javax.swing.JTable();
@@ -766,7 +792,8 @@ public class Sistema extends javax.swing.JFrame {
 
         btn_imprimirgenerar_venta.setBackground(new java.awt.Color(48, 234, 48));
         btn_imprimirgenerar_venta.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Img/print.png"))); // NOI18N
-        btn_imprimirgenerar_venta.setBorder(javax.swing.BorderFactory.createMatteBorder(8, 8, 8, 8, new java.awt.Color(204, 255, 255)));
+        btn_imprimirgenerar_venta.setText("Imprimir");
+        btn_imprimirgenerar_venta.setBorder(javax.swing.BorderFactory.createMatteBorder(8, 8, 8, 8, new java.awt.Color(9, 229, 229)));
         btn_imprimirgenerar_venta.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btn_imprimirgenerar_ventaActionPerformed(evt);
@@ -781,7 +808,7 @@ public class Sistema extends javax.swing.JFrame {
         label_total_venta.setBackground(new java.awt.Color(243, 243, 243));
         label_total_venta.setFont(new java.awt.Font("Tahoma", 1, 26)); // NOI18N
         label_total_venta.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        label_total_venta.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(51, 102, 255)));
+        label_total_venta.setBorder(javax.swing.BorderFactory.createMatteBorder(6, 6, 6, 6, new java.awt.Color(204, 204, 0)));
         label_total_venta.setFocusable(false);
         label_total_venta.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         label_total_venta.setOpaque(true);
@@ -804,12 +831,13 @@ public class Sistema extends javax.swing.JFrame {
         jLabel42.setBackground(new java.awt.Color(204, 255, 255));
         jLabel42.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         jLabel42.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel42.setText("IMPRIMIR");
+        jLabel42.setText("FACTURA");
         jLabel42.setOpaque(true);
 
         jButton1.setBackground(new java.awt.Color(153, 255, 153));
         jButton1.setFont(new java.awt.Font("Tahoma", 3, 9)); // NOI18N
         jButton1.setText("Buscar Nro DC.");
+        jButton1.setBorder(javax.swing.BorderFactory.createMatteBorder(6, 6, 6, 6, new javax.swing.ImageIcon(getClass().getResource("/Img/lupa.png")))); // NOI18N
         jButton1.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -824,7 +852,7 @@ public class Sistema extends javax.swing.JFrame {
 
         txt_dniruc_venta.setFont(new java.awt.Font("Tahoma", 2, 14)); // NOI18N
         txt_dniruc_venta.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        txt_dniruc_venta.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(51, 102, 255)));
+        txt_dniruc_venta.setBorder(javax.swing.BorderFactory.createMatteBorder(4, 4, 4, 4, new java.awt.Color(51, 102, 255)));
         txt_dniruc_venta.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
                 txt_dniruc_ventaKeyPressed(evt);
@@ -836,7 +864,7 @@ public class Sistema extends javax.swing.JFrame {
 
         txt_nombrecliente_venta.setFont(new java.awt.Font("Tahoma", 1, 13)); // NOI18N
         txt_nombrecliente_venta.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        txt_nombrecliente_venta.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(51, 102, 255)));
+        txt_nombrecliente_venta.setBorder(javax.swing.BorderFactory.createMatteBorder(3, 3, 3, 3, new java.awt.Color(51, 102, 255)));
         txt_nombrecliente_venta.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyTyped(java.awt.event.KeyEvent evt) {
                 txt_nombrecliente_ventaKeyTyped(evt);
@@ -851,7 +879,7 @@ public class Sistema extends javax.swing.JFrame {
         txt_telefonocliente_venta.setBackground(new java.awt.Color(248, 248, 248));
         txt_telefonocliente_venta.setFont(new java.awt.Font("Tahoma", 1, 13)); // NOI18N
         txt_telefonocliente_venta.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        txt_telefonocliente_venta.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(51, 102, 255)));
+        txt_telefonocliente_venta.setBorder(javax.swing.BorderFactory.createMatteBorder(3, 3, 3, 3, new java.awt.Color(51, 102, 255)));
 
         jLabel21.setFont(new java.awt.Font("Tahoma", 1, 13)); // NOI18N
         jLabel21.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -861,7 +889,7 @@ public class Sistema extends javax.swing.JFrame {
         txt_direccioncliente_venta.setBackground(new java.awt.Color(248, 248, 248));
         txt_direccioncliente_venta.setFont(new java.awt.Font("Tahoma", 1, 13)); // NOI18N
         txt_direccioncliente_venta.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        txt_direccioncliente_venta.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(51, 102, 255)));
+        txt_direccioncliente_venta.setBorder(javax.swing.BorderFactory.createMatteBorder(3, 3, 3, 3, new java.awt.Color(51, 102, 255)));
 
         jLabel39.setFont(new java.awt.Font("Tahoma", 1, 13)); // NOI18N
         jLabel39.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -871,7 +899,7 @@ public class Sistema extends javax.swing.JFrame {
         txt_razoncliente_venta.setBackground(new java.awt.Color(248, 248, 248));
         txt_razoncliente_venta.setFont(new java.awt.Font("Tahoma", 1, 13)); // NOI18N
         txt_razoncliente_venta.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        txt_razoncliente_venta.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(51, 102, 255)));
+        txt_razoncliente_venta.setBorder(javax.swing.BorderFactory.createMatteBorder(3, 3, 3, 3, new java.awt.Color(51, 102, 255)));
 
         jLabel40.setFont(new java.awt.Font("Tahoma", 1, 13)); // NOI18N
         jLabel40.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -892,7 +920,7 @@ public class Sistema extends javax.swing.JFrame {
         jLabel13.setFont(new java.awt.Font("Tahoma", 3, 11)); // NOI18N
         jLabel13.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel13.setText("Buscar Prod");
-        jLabel13.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED, new java.awt.Color(204, 255, 204), new java.awt.Color(204, 255, 204), new java.awt.Color(204, 255, 204), new java.awt.Color(204, 255, 204)));
+        jLabel13.setBorder(javax.swing.BorderFactory.createMatteBorder(1, 1, 1, 1, new java.awt.Color(0, 255, 51)));
         jLabel13.setOpaque(true);
         jLabel13.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -903,7 +931,7 @@ public class Sistema extends javax.swing.JFrame {
         comboBoxProduct.setBackground(new java.awt.Color(244, 244, 244));
         comboBoxProduct.setFont(new java.awt.Font("Tahoma", 2, 12)); // NOI18N
         comboBoxProduct.setMaximumRowCount(1000);
-        comboBoxProduct.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(51, 51, 255)));
+        comboBoxProduct.setBorder(javax.swing.BorderFactory.createMatteBorder(2, 2, 2, 2, new java.awt.Color(51, 102, 255)));
         comboBoxProduct.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
 
         jLabel17.setBackground(new java.awt.Color(255, 204, 255));
@@ -936,7 +964,7 @@ public class Sistema extends javax.swing.JFrame {
         txtPrecioVenta.setBackground(new java.awt.Color(248, 248, 248));
         txtPrecioVenta.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         txtPrecioVenta.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        txtPrecioVenta.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(51, 102, 255)));
+        txtPrecioVenta.setBorder(javax.swing.BorderFactory.createMatteBorder(5, 5, 5, 5, new java.awt.Color(51, 102, 255)));
 
         jLabel16.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         jLabel16.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -1020,13 +1048,13 @@ public class Sistema extends javax.swing.JFrame {
                         .addGroup(jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(txt_razoncliente_venta)
                             .addComponent(jLabel40, javax.swing.GroupLayout.DEFAULT_SIZE, 203, Short.MAX_VALUE))))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(btn_imprimirgenerar_venta, javax.swing.GroupLayout.PREFERRED_SIZE, 137, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(49, 49, 49)
+                .addComponent(btn_imprimirgenerar_venta, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGap(35, 35, 35))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel10Layout.createSequentialGroup()
                 .addComponent(jLabel70, javax.swing.GroupLayout.PREFERRED_SIZE, 556, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jLabel42, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jLabel42, javax.swing.GroupLayout.PREFERRED_SIZE, 103, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(64, 64, 64))
             .addGroup(jPanel10Layout.createSequentialGroup()
                 .addGroup(jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -1072,12 +1100,12 @@ public class Sistema extends javax.swing.JFrame {
                                         .addComponent(jLabel18, javax.swing.GroupLayout.PREFERRED_SIZE, 233, javax.swing.GroupLayout.PREFERRED_SIZE)))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(jButton1)
-                                .addGap(67, 67, 67)
+                                .addGap(42, 42, 42)
                                 .addComponent(jLabel20)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(label_total_venta, javax.swing.GroupLayout.PREFERRED_SIZE, 137, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(label_total_venta, javax.swing.GroupLayout.PREFERRED_SIZE, 158, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 1062, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(19, Short.MAX_VALUE))
         );
         jPanel10Layout.setVerticalGroup(
             jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -1267,6 +1295,7 @@ public class Sistema extends javax.swing.JFrame {
         txt_razonsocial_clientes.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(51, 51, 255)));
 
         table_clientes.setBackground(new java.awt.Color(232, 232, 254));
+        table_clientes.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         table_clientes.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         table_clientes.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -1294,7 +1323,7 @@ public class Sistema extends javax.swing.JFrame {
 
         btn_guardar_clientes.setBackground(new java.awt.Color(234, 254, 245));
         btn_guardar_clientes.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Img/GuardarTodo.png"))); // NOI18N
-        btn_guardar_clientes.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 255, 0), 1, true));
+        btn_guardar_clientes.setBorder(javax.swing.BorderFactory.createMatteBorder(11, 11, 11, 11, new java.awt.Color(0, 255, 0)));
         btn_guardar_clientes.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         btn_guardar_clientes.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -1304,7 +1333,7 @@ public class Sistema extends javax.swing.JFrame {
 
         btn_editar_clientes.setBackground(new java.awt.Color(239, 242, 247));
         btn_editar_clientes.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Img/Actualizar (2).png"))); // NOI18N
-        btn_editar_clientes.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(51, 102, 255), 1, true));
+        btn_editar_clientes.setBorder(javax.swing.BorderFactory.createMatteBorder(11, 11, 11, 11, new java.awt.Color(51, 102, 255)));
         btn_editar_clientes.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         btn_editar_clientes.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -1314,7 +1343,7 @@ public class Sistema extends javax.swing.JFrame {
 
         btn_eliminar_clientes.setBackground(new java.awt.Color(253, 227, 253));
         btn_eliminar_clientes.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Img/eliminar.png"))); // NOI18N
-        btn_eliminar_clientes.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(102, 0, 51), 1, true));
+        btn_eliminar_clientes.setBorder(javax.swing.BorderFactory.createMatteBorder(11, 11, 11, 11, new java.awt.Color(102, 0, 51)));
         btn_eliminar_clientes.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         btn_eliminar_clientes.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -1324,7 +1353,7 @@ public class Sistema extends javax.swing.JFrame {
 
         btn_nuevo_clientes.setBackground(new java.awt.Color(250, 251, 243));
         btn_nuevo_clientes.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Img/nuevo.png"))); // NOI18N
-        btn_nuevo_clientes.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(255, 255, 0), 1, true));
+        btn_nuevo_clientes.setBorder(javax.swing.BorderFactory.createMatteBorder(11, 11, 11, 11, new java.awt.Color(255, 255, 0)));
         btn_nuevo_clientes.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         btn_nuevo_clientes.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -1336,11 +1365,11 @@ public class Sistema extends javax.swing.JFrame {
         txt_id_clientes.setBackground(new java.awt.Color(210, 210, 210));
         txt_id_clientes.setHorizontalAlignment(javax.swing.JTextField.CENTER);
 
-        jLabel34.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        jLabel34.setFont(new java.awt.Font("Tahoma", 1, 16)); // NOI18N
         jLabel34.setForeground(new java.awt.Color(51, 102, 0));
         jLabel34.setText("Guardar");
 
-        jLabel35.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        jLabel35.setFont(new java.awt.Font("Tahoma", 1, 16)); // NOI18N
         jLabel35.setForeground(new java.awt.Color(102, 102, 0));
         jLabel35.setText("Nuevo");
 
@@ -1348,7 +1377,7 @@ public class Sistema extends javax.swing.JFrame {
         jLabel36.setForeground(new java.awt.Color(0, 51, 102));
         jLabel36.setText("Actualizar");
 
-        jLabel37.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        jLabel37.setFont(new java.awt.Font("Tahoma", 1, 16)); // NOI18N
         jLabel37.setForeground(new java.awt.Color(204, 0, 0));
         jLabel37.setText("Eliminar");
 
@@ -1423,10 +1452,14 @@ public class Sistema extends javax.swing.JFrame {
                             .addComponent(btn_eliminar_clientes, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(btn_editar_clientes, javax.swing.GroupLayout.DEFAULT_SIZE, 105, Short.MAX_VALUE))))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jLabel37, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel36, javax.swing.GroupLayout.DEFAULT_SIZE, 74, Short.MAX_VALUE)
-                    .addComponent(jLabel35, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(jPanel5Layout.createSequentialGroup()
+                        .addComponent(jLabel37)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel5Layout.createSequentialGroup()
+                        .addComponent(jLabel35, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addContainerGap())
                     .addComponent(jLabel34, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
             .addComponent(jLabel65, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(jPanel5Layout.createSequentialGroup()
@@ -1580,9 +1613,9 @@ public class Sistema extends javax.swing.JFrame {
         txt_razonsocial_proveedor.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         txt_razonsocial_proveedor.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(51, 51, 255)));
 
-        btn_guardar_proveedor.setBackground(new java.awt.Color(209, 208, 208));
+        btn_guardar_proveedor.setBackground(new java.awt.Color(102, 255, 102));
         btn_guardar_proveedor.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Img/GuardarTodo.png"))); // NOI18N
-        btn_guardar_proveedor.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(102, 255, 102), 2, true));
+        btn_guardar_proveedor.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 255, 0), 2, true));
         btn_guardar_proveedor.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         btn_guardar_proveedor.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -1590,7 +1623,7 @@ public class Sistema extends javax.swing.JFrame {
             }
         });
 
-        btn_eliminar_proveedor.setBackground(new java.awt.Color(209, 208, 208));
+        btn_eliminar_proveedor.setBackground(new java.awt.Color(249, 77, 77));
         btn_eliminar_proveedor.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Img/eliminar.png"))); // NOI18N
         btn_eliminar_proveedor.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(255, 51, 51), 2, true));
         btn_eliminar_proveedor.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
@@ -1600,7 +1633,7 @@ public class Sistema extends javax.swing.JFrame {
             }
         });
 
-        btn_editar_proveedor.setBackground(new java.awt.Color(209, 208, 208));
+        btn_editar_proveedor.setBackground(new java.awt.Color(102, 102, 255));
         btn_editar_proveedor.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Img/Actualizar (2).png"))); // NOI18N
         btn_editar_proveedor.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 51, 204), 2));
         btn_editar_proveedor.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
@@ -1610,7 +1643,7 @@ public class Sistema extends javax.swing.JFrame {
             }
         });
 
-        btn_nuevo_proveedor.setBackground(new java.awt.Color(209, 208, 208));
+        btn_nuevo_proveedor.setBackground(new java.awt.Color(204, 255, 102));
         btn_nuevo_proveedor.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Img/nuevo.png"))); // NOI18N
         btn_nuevo_proveedor.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(102, 102, 0), 2, true));
         btn_nuevo_proveedor.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
@@ -1621,7 +1654,7 @@ public class Sistema extends javax.swing.JFrame {
         });
 
         table_proveedor.setBackground(new java.awt.Color(232, 232, 254));
-        table_proveedor.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(204, 204, 255)));
+        table_proveedor.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         table_proveedor.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         table_proveedor.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -1916,7 +1949,6 @@ public class Sistema extends javax.swing.JFrame {
         });
 
         cbx_proveedor.setBackground(new java.awt.Color(239, 237, 237));
-        cbx_proveedor.setEditable(true);
         cbx_proveedor.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "ninguno" }));
         cbx_proveedor.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(51, 51, 255)));
 
@@ -2045,9 +2077,6 @@ public class Sistema extends javax.swing.JFrame {
         jLabel59.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         jLabel59.setText("Para registrar un producto nuevo, de click en agregar nuevo y esto habilitara los campos de escritura, luego de click en guardar.");
 
-        jTextBuscCodProd.setFont(new java.awt.Font("Tahoma", 2, 10)); // NOI18N
-        jTextBuscCodProd.setText("BUSCAR COD PRODUCTO...");
-
         javax.swing.GroupLayout jPanel7Layout = new javax.swing.GroupLayout(jPanel7);
         jPanel7.setLayout(jPanel7Layout);
         jPanel7Layout.setHorizontalGroup(
@@ -2056,7 +2085,7 @@ public class Sistema extends javax.swing.JFrame {
                 .addGap(25, 25, 25)
                 .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel7Layout.createSequentialGroup()
-                        .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                        .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addGroup(jPanel7Layout.createSequentialGroup()
                                 .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                                     .addComponent(jLabel23, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -2076,8 +2105,6 @@ public class Sistema extends javax.swing.JFrame {
                                     .addComponent(btn_eliminar_productos, javax.swing.GroupLayout.PREFERRED_SIZE, 187, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(btn_editar_productos, javax.swing.GroupLayout.PREFERRED_SIZE, 186, javax.swing.GroupLayout.PREFERRED_SIZE)))
                             .addGroup(jPanel7Layout.createSequentialGroup()
-                                .addComponent(jTextBuscCodProd, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 90, Short.MAX_VALUE)
                                 .addComponent(jLabel45, javax.swing.GroupLayout.PREFERRED_SIZE, 531, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(82, 82, 82)))
                         .addGap(0, 0, Short.MAX_VALUE))
@@ -2135,9 +2162,7 @@ public class Sistema extends javax.swing.JFrame {
                             .addComponent(jLabel26)
                             .addComponent(txt_precio_productos, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(jPanel7Layout.createSequentialGroup()
-                        .addGap(17, 17, 17)
-                        .addComponent(jTextBuscCodProd, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGap(42, 42, 42)
                         .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel23, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(btn_eliminar_productos)
@@ -2703,6 +2728,10 @@ public class Sistema extends javax.swing.JFrame {
 
     private void btn_productosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_productosActionPerformed
         // TODO add your handling code here:
+        cbx_proveedor.removeAllItems();
+        proDao.consult_proveed_prod_cbx(cbx_proveedor);
+        cbx_proveedor.addItem("ninguno");
+        
         checkboxProduct.setState(false);
         limpiarTabla();
         limpiar_campos_productos();
@@ -2713,7 +2742,7 @@ public class Sistema extends javax.swing.JFrame {
         txt_precio_productos.setEditable(false);
         
         jTabbedPane2.setSelectedIndex(3);
-        
+        cbx_proveedor.setSelectedItem("ninguno");
     }//GEN-LAST:event_btn_productosActionPerformed
 
     private void btn_ventasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_ventasActionPerformed
@@ -2907,7 +2936,7 @@ public class Sistema extends javax.swing.JFrame {
                 // TODO add your handling code here:
                 int id = Integer.parseInt(txt_id_ventas.getText());
                 String home = System.getProperty("user.home");
-                File file = new File(home+"/Downloads/venta_" + id + ".pdf");
+                File file = new File(home+"/Documents/reportes/venta_" + id + ".pdf");
                 Desktop.getDesktop().open(file);
                 String cadena="Factura generada correctamente";
                 JOptionPane.showMessageDialog(null, "<html><span style='color:green;'>" +cadena+ "</span></html>");
@@ -2987,7 +3016,7 @@ public class Sistema extends javax.swing.JFrame {
          limpiarTabla();
          limpiar_campos_productos();
          listar_productos();
-        
+         btn_productos.doClick();
     }//GEN-LAST:event_btn_eliminar_productosActionPerformed
 
     private void btn_editar_productosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_editar_productosActionPerformed
@@ -3028,6 +3057,7 @@ public class Sistema extends javax.swing.JFrame {
             checkboxProduct.setState(false);
         limpiar_campos_productos();
         listar_productos();
+        cbx_proveedor.setSelectedItem("ninguno");
         txt_codigo_productos.setEditable(true);
         txt_pro_nombre.setEditable(true);
         txt_Stock_productos.setEditable(true);
@@ -3779,7 +3809,6 @@ public class Sistema extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JScrollPane jScrollPane5;
     private javax.swing.JTabbedPane jTabbedPane2;
-    private javax.swing.JTextField jTextBuscCodProd;
     private java.awt.Label label1;
     private javax.swing.JLabel label_total_venta;
     private javax.swing.JTable table_clientes;
@@ -3973,7 +4002,7 @@ public class Sistema extends javax.swing.JFrame {
         File file = new File(directorio, nombreArchivo);
 
         FileOutputStream archivo;
-        String rutaImagen=carpeta+"ebrey.png";
+        String rutaImagen=carpeta+"imagen.png";
         File file2 = new File(rutaImagen);
             
                 try {
@@ -4180,9 +4209,9 @@ public class Sistema extends javax.swing.JFrame {
                 mensaje2.add(Chunk.NEWLINE);
                 mensaje2.add(Chunk.NEWLINE);
                 mensaje2.add(Chunk.NEWLINE);
-                Chunk mensaje2Chunk = new Chunk ("Al firmar arriba nuestro cliente confirma quedar absolutamente conforme con la compra y todo el procedimiento dutante el proceso", negrita);
+                Chunk mensaje2Chunk = new Chunk ("Al firmar arriba nuestro cliente confirma quedar absolutamente conforme con la compra y todo el procedimiento durante el proceso, nuestra atencion y calidad es nuestra marca, MUCHAS GRACIAS por su compra, ¡regrese pronto!", negrita);
                 mensaje2Chunk.setBackground(BaseColor.LIGHT_GRAY);
-                mensaje2.add(mensajeChunk);
+                mensaje2.add(mensaje2Chunk);
                 mensaje2.setAlignment(Element.ALIGN_CENTER);
 
                 docum.add(mensaje2);
